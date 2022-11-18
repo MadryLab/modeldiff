@@ -1,0 +1,18 @@
+expt:
+  expt_name: ~
+  num_models: 500
+  transform_type: ~
+  datamodel_name: ~
+  models_dir: ~
+  data_split: test
+  save_dir: ~
+dataloading:
+  batch_size: 512
+  num_workers: 3
+  pin_memory: 1
+patch:
+  size: 25
+  loc: 112
+  xloc: 30
+  yloc: 100
+  prob: 1

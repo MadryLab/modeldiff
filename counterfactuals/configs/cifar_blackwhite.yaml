@@ -1,0 +1,16 @@
+expt:
+  expt_name: ~
+  datamodel_name: ~
+  num_models: 500
+  save_dir: ~
+  checkpoint_type: best
+dataloading:
+  batch_size: 2500
+  num_workers: 3
+  pin_memory: 1
+patch:
+  size: ~
+  x_min: 4
+  x_max: 4
+  y_min: 13
+  y_max: 13

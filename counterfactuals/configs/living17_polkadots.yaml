@@ -1,0 +1,13 @@
+expt:
+  expt_name: ~
+  num_models: 500
+  model_type: ~
+  save_dir: ~
+dataloading:
+  batch_size: 100
+  num_workers: 4
+patch:
+  filepath: ~
+  delta: ~
+  random_crop: 1
+  random_crop_scale: 0.5

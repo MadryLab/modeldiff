@@ -1,0 +1,14 @@
+fastargs==1.2.0
+ffcv==0.0.3
+matplotlib==3.4.3
+numpy==1.20.3
+pandas==1.3.4
+Pillow==9.3.0
+scikit_learn==1.1.3
+scipy==1.7.1
+seaborn==0.11.2
+torch==1.11.0
+torchmetrics==0.10.2
+torchvision==0.12.0
+tqdm==4.62.3
+wilds==2.0.0

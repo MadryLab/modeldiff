@@ -1,0 +1,12 @@
+expt:
+  expt_name: ~
+  num_models: 500
+  datamodel_name: ~
+  dataset_dir: ~
+  models_dir: ~
+  data_split: test
+  save_dir: ~
+dataloading:
+  batch_size: 500
+  num_workers: 3
+  pin_memory: 1
