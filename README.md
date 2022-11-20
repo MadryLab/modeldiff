@@ -17,7 +17,7 @@ This repository contains the code for *ModelDiff*, a framework for feature-based
 ```
 
 ## Overview
-<p align='center'><img src="static/visual_summary.pdf"/></p>
+<p align='center'><img src="static/visual_summary.png"/></p>
 
 The figure above summarizes our algorithm comparisons framework, *ModelDiff*.
 - First, our method computes [datamodel representations](https://gradientscience.org/datamodels-1/) for each algorithm (part A) and then computes *residual datamodels* (part B) to identify directions (in training set space) that are specific to each algorithm.
