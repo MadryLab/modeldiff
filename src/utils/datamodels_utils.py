@@ -257,6 +257,8 @@ class DatamodelResidualPCA(DatamodelPCABase):
         if self.normalize_embeddings:
             X /= np.linalg.norm(X, axis=1).reshape(-1,1)
         return X
+    
+ModelDiff = DatamodelResidualPCA
 
 class InfluenceVisualizer(object):
     """
