@@ -30,6 +30,24 @@ In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three 
 </p>
 
 
+## Basic usage
+
+```python
+
+# setup datasets
+dataset_map = {'train': train_dataset, 'test': test_dataset}
+
+# setup paths to data attribution scores (for both learning algorithms)
+scores_1 = ...
+scores_2 = ...  # path to score matrix of size [num_train x num_test] 
+
+# run ModelDiff  
+K = ... # number of distinguishing directions 
+pca = dm_utils.ModelDiff(dm_1, dm_2, K, dataset_map)
+# pca.pca_components is a [K x N] matrix where N is train set size
+```
+
+Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/analysis) for end-to-end examples of using ModelDiff to analyze the effect of standard data augmentation, ImageNet pre-training, and SGD hyperparameters! 
 
 ## Getting started
 
@@ -44,11 +62,16 @@ In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three 
         pip install -r requirements.txt
     ```
 
-3. Setup datasets. We use CIFAR-10 ([torchvision](https://pytorch.org/vision/stable/generated/torchvision.datasets.CIFAR10.html)), Waterbirds ([WILDS](https://github.com/p-lambda/wilds)), and Living17 ([BREEDS](https://github.com/MadryLab/BREEDS-Benchmarks)). Also, change the `DATA_DIR` path in `src/data/datasets.py` to the parent directory of ImageNet data.
+3. Setup datasets. We use CIFAR-10 ([torchvision](https://pytorch.org/vision/stable/generated/torchvision.datasets.CIFAR10.html)), Waterbirds ([WILDS](https://github.com/p-lambda/wilds)), and Living17 ([BREEDS](https://github.com/MadryLab/BREEDS-Benchmarks)). Also, change the `DATA_DIR` path in `src/data/datasets.py` to the parent directory of ImageNet data
 
-4. Our framework essentially relies on data attributions (e.g., datamodel or TRAK scores) to identify distinguishing features. **Download pre-computed datamodel (and TRAK) scores for these case studies from [here](https://www.dropbox.com/s/9ohxrrba8wb2piv/datamodels.zip?dl=0) and unzip them into  `datamodels/`**
+4. Our framework essentially relies on example-level data attributions (e.g., datamodel or TRAK scores) to identify distinguishing features. **Download pre-computed datamodel (and TRAK) scores for these case studies from [here](https://www.dropbox.com/s/9ohxrrba8wb2piv/datamodels.zip?dl=0) and unzip them into  `datamodels/`**
 
-That's it! Now you can run notebooks (one corresponding to each case study in `analysis/`), or take a look at our scripts (in `counterfactuals/`) that evaluate the average treatment effect of distinguishing feature transformations identified via ModelDiff.
+That's it! Next steps: 
+- Download pre-computed datamodel (and TRAK) scores for CIFAR-10, Living17, and Waterbirds data from [here](https://www.dropbox.com/s/9ohxrrba8wb2piv/datamodels.zip?dl=0)
+- Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/analysis) for end-to-end ModelDiff examples (each notebook corresponds to a case study in our [paper](https://arxiv.org/abs/2211.12491))
+- Take a look at our scripts (in `counterfactuals/`) that evaluate the average treatment effect of distinguishing feature transformations identified via ModelDiff
+- Compute data attribution scores from scratch using datamodels (https://github.com/MadryLab/datamodels) or TRAK (https://github.com/MadryLab/trak) and run ModelDiff for any two learning algorithms!
+
 
 ## Maintainers
 
