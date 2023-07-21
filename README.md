@@ -8,11 +8,13 @@ This repository contains the code for *ModelDiff*, a framework for feature-based
 **Blog post**: http://gradientscience.org/modeldiff/
 
 ```bibtex
-@inproceedings{shah2022modeldiff,
-  title={ModelDiff: A Framework for Comparing Learning Algorithms},
-  author = {Harshay Shah and Sung Min Park and Andrew Ilyas and Aleksander Madry},
-  booktitle = {ArXiv preprint arXiv:2211.12491},
-  year = {2022}
+@inproceedings{shah2023modeldiff,
+  title={Modeldiff: A framework for comparing learning algorithms},
+  author={Shah, Harshay and Park, Sung Min and Ilyas, Andrew and Madry, Aleksander},
+  booktitle={International Conference on Machine Learning},
+  pages={30646--30688},
+  year={2023},
+  organization={PMLR}
 }
 ```
 
