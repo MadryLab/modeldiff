@@ -21,6 +21,6 @@ setup(name="modeldiff",
                "seaborn",
                "wget",
                "scipy",
-               ],
+               ],},
       include_package_data=True,
       )
