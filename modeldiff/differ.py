@@ -39,11 +39,23 @@ class ModelDiff():
         # TODO: call TRAK
         pass
 
-    def compare(self, val_loader):
+    def _compare(self, val_loader, num_pca_comps: int, flip: bool):
+        """
+        flip (bool): if True, flips the scores of models A and B (to compute
+                      B-A), otherwise computes A-B
+        """
         self.scores_A = self._attribute_model(True)
         self.scores_B = self._attribute_model(False)
 
         self.val_loader = val_loader
-        diff = pca_diff(self.scores_A, self.scores_B, self.val_loader)
+        if flip:
+            diff = pca_diff(self.scores_B, self.scores_A, self.val_loader)
+        else:
+            diff = pca_diff(self.scores_A, self.scores_B, self.val_loader)
         return diff
-        
+
+    def get_A_minus_B(self, val_loader, num_pca_comps: int):
+        return self._compare(val_loader, num_pca_comps, flip=False)
+
+    def get_B_minus_A(self, val_loader, num_pca_comps: int):
+        return self._compare(val_loader, num_pca_comps, flip=True)
