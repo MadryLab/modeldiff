@@ -1,3 +1,8 @@
+notebooks/datamodels/
+notebooks/modeldiff_scores/
+checkpoints/
+
+
 # Byte-compiled / optimized / DLL files
 .DS_Store
 tmp.md
