@@ -2,7 +2,7 @@ from torch import Tensor
 from torch.nn import Module
 from torch.utils.data import DataLoader
 from collections.abc import OrderedDict, Iterable
-from .pca import pca_diff
+from .pca import residual_pca
 from trak import TRAKer
 
 
@@ -86,15 +86,25 @@ class ModelDiff():
         self.scores_A = self._attribute_model(self.val_loader, True)
         self.scores_B = self._attribute_model(self.val_loader, False)
 
-        self.val_loader = val_loader
-        if flip:
-            diff = pca_diff(self.scores_B, self.scores_A, self.val_loader, num_pca_comps)
+        self.val_loader = val_loader # @Kristina: Attribute 'val_loader' defined outside __init__ :p
+
+        if flip: # @Kris: don't need val_loader for residual pca stuff
+            diff = residual_pca(self.scores_B, self.scores_A, num_pca_comps)
         else:
-            diff = pca_diff(self.scores_A, self.scores_B, self.val_loader, num_pca_comps)
+            diff = residual_pca(self.scores_A, self.scores_B, num_pca_comps)
+
         return diff
 
     def get_A_minus_B(self, val_loader, num_pca_comps: int):
+        """
+        Returns residual PCA directions that have high explained variance
+        for model A but low explained variance for model B.
+        """
         return self._compare(val_loader, num_pca_comps, flip=False)
 
     def get_B_minus_A(self, val_loader, num_pca_comps: int):
+        """
+        Returns residual PCA directions that have high explained variance
+        for model B but low explained variance for model A.
+        """
         return self._compare(val_loader, num_pca_comps, flip=True)
