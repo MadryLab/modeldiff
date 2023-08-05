@@ -1,4 +1,5 @@
 notebooks/datamodels/
+notebooks/checkpoints/
 
 # Byte-compiled / optimized / DLL files
 .DS_Store
