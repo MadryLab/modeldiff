@@ -46,7 +46,7 @@ ckptsB = [...]
 train_loader = ...
 
 # init ModelDiff  
-md = ModelDiff(modelA, modelB, ckptsA, ckptsB, train_loader, val_loader)
+md = ModelDiff(modelA, modelB, ckptsA, ckptsB, train_loader)
 
 # compare models 
 val_loader = ...
