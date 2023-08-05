@@ -33,7 +33,7 @@ In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three 
 </p>
 
 
-## Usage (TODO: use new api here)
+## Example Usage
 
 ```python
 from modeldiff import ModelDiff
@@ -68,7 +68,18 @@ Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/anal
 
 3. Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/notebooks) for end-to-end ModelDiff examples; each notebook corresponds to a case study in our [paper](https://arxiv.org/abs/2211.12491). For each case study, we provide scripts in `counterfactuals/` to test the effect of the distinguishing transformationss (inferred via ModelDiff) on the predictions of  trained using different learning algorithms. 
 
-If you want to compute data attribution scores from scratch with a method different from TRAK (e.g. [datamodels](https://github.com/MadryLab/datamodels)), you can pre-compute those yourself and use the `.get_A_minus_B_from_scores()` and `.get_B_minus_A_from_scores` methods.
+If you want to compute data attribution scores from scratch with a method different from TRAK (e.g. [datamodels](https://github.com/MadryLab/datamodels)), you can pre-compute those yourself and use the `.get_A_minus_B_from_scores()` and `.get_B_minus_A_from_scores()` methods:
+```python
+# init ModelDiff  
+md = ModelDiff(modelA, modelB, ckptsA=[], ckptsB=[], train_loader=None)
+
+# load scores
+scoresA = ...
+scoresB = ...
+
+# compare models
+diff = md.get_A_minus_B_from_scores(scoresA, scoresB, num_pca_components=2)
+```
 
 ## Maintainers
 
