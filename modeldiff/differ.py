@@ -10,25 +10,27 @@ import torch
 
 class ModelDiff():
     def __init__(self,
-                 train_loader: DataLoader,
-                 model_arch: Module,
+                 modelA: Module,
+                 modelB: Module,
                  modelA_ckpts: Iterable,
                  modelB_ckpts: Iterable,
+                 train_loader: DataLoader,
                  scores_save_dir: str='./modeldiff_scores') -> None:
         """
         A list of model parameters (model.state_dict())
         """
         self.train_loader = train_loader
-        self.model_arch = model_arch
+        self.modelA = modelA
+        self.modelB = modelB
         self.modelA_ckpts = modelA_ckpts
         self.modelB_ckpts = modelB_ckpts
         self.scores_save_dir = Path(scores_save_dir)
-        self.trakerA = TRAKer(model=self.model_arch,
+        self.trakerA = TRAKer(model=self.modelA,
                               task='image_classification',
                               train_set_size=self.train_loader.dataset.__len__(),
                               save_dir=self.scores_save_dir.joinpath('modelA')
                               )
-        self.trakerB = TRAKer(model=self.model_arch,
+        self.trakerB = TRAKer(model=self.modelB,
                               task='image_classification',
                               train_set_size=self.train_loader.dataset.__len__(),
                               save_dir=self.scores_save_dir.joinpath('modelB')
