@@ -1,6 +1,7 @@
 from torch.nn import Module
 from torch.utils.data import DataLoader
 from collections.abc import Iterable
+from typing import Optional
 from pathlib import Path
 from tqdm import tqdm
 from .pca import residual_pca
@@ -10,11 +11,11 @@ import torch
 
 class ModelDiff():
     def __init__(self,
-                 modelA: Module,
-                 modelB: Module,
-                 modelA_ckpts: Iterable,
-                 modelB_ckpts: Iterable,
-                 train_loader: DataLoader,
+                 modelA: Optional[Module] = None,
+                 modelB: Optional[Module] = None,
+                 modelA_ckpts: Iterable = [],
+                 modelB_ckpts: Iterable = [],
+                 train_loader: Optional[DataLoader] = None,
                  scores_save_dir: str='./modeldiff_scores') -> None:
         """
         A list of model parameters (model.state_dict())
@@ -25,16 +26,19 @@ class ModelDiff():
         self.modelA_ckpts = modelA_ckpts
         self.modelB_ckpts = modelB_ckpts
         self.scores_save_dir = Path(scores_save_dir)
-        self.trakerA = TRAKer(model=self.modelA,
-                              task='image_classification',
-                              train_set_size=self.train_loader.dataset.__len__(),
-                              save_dir=self.scores_save_dir.joinpath('modelA')
-                              )
-        self.trakerB = TRAKer(model=self.modelB,
-                              task='image_classification',
-                              train_set_size=self.train_loader.dataset.__len__(),
-                              save_dir=self.scores_save_dir.joinpath('modelB')
-                              )
+
+        if modelA is not None and modelB is not None:
+            self.trakerA = TRAKer(model=self.modelA,
+                                task='image_classification',
+                                train_set_size=self.train_loader.dataset.__len__(),
+                                save_dir=self.scores_save_dir.joinpath('modelA')
+                                )
+            self.trakerB = TRAKer(model=self.modelB,
+                                task='image_classification',
+                                train_set_size=self.train_loader.dataset.__len__(),
+                                save_dir=self.scores_save_dir.joinpath('modelB')
+                                )
+
         self.is_featurizedA = False
         self.is_featurizedB = False
 
