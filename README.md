@@ -50,10 +50,10 @@ md = ModelDiff(modelA, modelB, ckptsA, ckptsB, train_loader)
 
 # compare models 
 val_loader = ...
-diff = md.get_A_minus_B(val_loader, num_pca_components=2)
+diff = md.get_A_minus_B(val_loader, num_pca_comps=2)
 
 another_val_loader = ...
-diff2 = md.get_B_minus_A(another_val_loader, num_pca_components=2)
+diff2 = md.get_B_minus_A(another_val_loader, num_pca_comps=2)
 ```
 
 Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/analysis) for end-to-end examples of using ModelDiff to analyze the effect of standard data augmentation, ImageNet pre-training, and SGD hyperparameters! 
@@ -71,14 +71,14 @@ Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/anal
 If you want to compute data attribution scores from scratch with a method different from TRAK (e.g. [datamodels](https://github.com/MadryLab/datamodels)), you can pre-compute those yourself and use the `.get_A_minus_B_from_scores()` and `.get_B_minus_A_from_scores()` methods:
 ```python
 # init ModelDiff  
-md = ModelDiff(modelA, modelB, ckptsA=[], ckptsB=[], train_loader=None)
+md = ModelDiff()
 
 # load scores
 scoresA = ...
 scoresB = ...
 
 # compare models
-diff = md.get_A_minus_B_from_scores(scoresA, scoresB, num_pca_components=2)
+diff = md.get_A_minus_B_from_scores(scoresA, scoresB, num_pca_comps=2)
 ```
 
 ## Maintainers
