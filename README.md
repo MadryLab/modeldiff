@@ -33,40 +33,42 @@ In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three 
 </p>
 
 
-## Basic usage (TODO: use new api here)
+## Usage (TODO: use new api here)
 
 ```python
+from modeldiff import ModelDiff
 
-# setup datasets
-dataset_map = {'train': train_dataset, 'test': test_dataset}
+# setup models, checkpoints, and loaders
+modelA = ...
+modelB = ...
+ckptsA = [...] 
+ckptsB = [...] 
+train_loader = ...
 
-# setup paths to data attribution scores (for both learning algorithms)
-scores_1 = ...
-scores_2 = ...  # path to score matrix of size [num_train x num_test] 
+# init ModelDiff  
+md = ModelDiff(modelA, modelB, ckptsA, ckptsB, train_loader, val_loader)
 
-# run ModelDiff  
-K = ... # number of distinguishing directions 
-pca = dm_utils.ModelDiff(dm_1, dm_2, K, dataset_map)
-# pca.pca_components is a [K x N] matrix where N is train set size
+# compare models 
+val_loader = ...
+diff = md.get_A_minus_B(val_loader, num_pca_components=2)
+
+another_val_loader = ...
+diff2 = md.get_B_minus_A(another_val_loader, num_pca_components=2)
 ```
 
 Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/analysis) for end-to-end examples of using ModelDiff to analyze the effect of standard data augmentation, ImageNet pre-training, and SGD hyperparameters! 
 
 ## Getting started
 
-1. Clone the repo: `git clone git@github.com:MadryLab/modeldiff.git`
+1. To use the API, simply
+   ```
+   pip install modeldiff
+   ```
+2. For an example usage, check out `notebooks/api_example.ipynb`. In there, we (a) compute TRAK scores (from scratch) for two learning algorithms and (b) then run ModelDiff to compare these algorithms (this is all achieved with one line of code using `modeldiff`!).
 
-2. Our code relies on the FFCV Library. To install this library along with other dependencies including PyTorch, follow the instructions below [TODO: update this]
-    ```
-        conda create -n ffcv python=3.9 cupy pkg-config compilers libjpeg-turbo opencv pytorch torchvision cudatoolkit=11.3 numba -c pytorch -c conda-forge
-        conda activate ffcv
-
-        cd <REPO-DIR>
-        pip install -r requirements.txt
-    ```
 3. Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/notebooks) for end-to-end ModelDiff examples; each notebook corresponds to a case study in our [paper](https://arxiv.org/abs/2211.12491). For each case study, we provide scripts in `counterfactuals/` to test the effect of the distinguishing transformationss (inferred via ModelDiff) on the predictions of  trained using different learning algorithms. 
 
-4. Compute data attribution scores from scratch using datamodels (https://github.com/MadryLab/datamodels) or TRAK (https://github.com/MadryLab/trak) to run ModelDiff for any two learning algorithms. See `notebooks/api_example.ipynb` for an example on how to compute TRAK scores (from scratch) for two learning algorithms and (b) then run ModelDiff to compare these algorithms. [TODO: add this notebook]
+If you want to compute data attribution scores from scratch with a method different from TRAK (e.g. [datamodels](https://github.com/MadryLab/datamodels)), you can pre-compute those yourself and use the `.get_A_minus_B_from_scores()` and `.get_B_minus_A_from_scores` methods.
 
 ## Maintainers
 
