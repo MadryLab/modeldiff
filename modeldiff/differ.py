@@ -83,12 +83,10 @@ class ModelDiff():
         flip (bool): if True, flips the scores of models A and B (to compute
                       B-A), otherwise computes A-B
         """
-        self.scores_A = self._attribute_model(self.val_loader, True)
-        self.scores_B = self._attribute_model(self.val_loader, False)
+        self.scores_A = self._attribute_model(val_loader, True)
+        self.scores_B = self._attribute_model(val_loader, False)
 
-        self.val_loader = val_loader # @Kristina: Attribute 'val_loader' defined outside __init__ :p
-
-        if flip: # @Kris: don't need val_loader for residual pca stuff
+        if flip:
             diff = residual_pca(self.scores_B, self.scores_A, num_pca_comps)
         else:
             diff = residual_pca(self.scores_A, self.scores_B, num_pca_comps)
