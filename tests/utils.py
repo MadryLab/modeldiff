@@ -1,12 +1,13 @@
 import torch
 import torchvision
-from modeldiff import ModelDiff
+
 
 # Resnet9
 class Mul(torch.nn.Module):
     def __init__(self, weight):
         super(Mul, self).__init__()
         self.weight = weight
+
     def forward(self, x): return x * self.weight
 
 
@@ -18,6 +19,7 @@ class Residual(torch.nn.Module):
     def __init__(self, module):
         super(Residual, self).__init__()
         self.module = module
+
     def forward(self, x): return x + self.module(x)
 
 
@@ -25,7 +27,7 @@ def construct_model(num_classes=10):
     def conv_bn(channels_in, channels_out, kernel_size=3, stride=1, padding=1, groups=1):
         return torch.nn.Sequential(
                 torch.nn.Conv2d(channels_in, channels_out, kernel_size=kernel_size,
-                            stride=stride, padding=padding, groups=groups, bias=False),
+                                stride=stride, padding=padding, groups=groups, bias=False),
                 torch.nn.BatchNorm2d(channels_out),
                 torch.nn.ReLU(inplace=True)
         )
@@ -43,6 +45,7 @@ def construct_model(num_classes=10):
         Mul(0.2)
     )
     return model.cuda()
+
 
 def get_dataloader(batch_size=256, num_workers=8, split='train', shuffle=False, augment=True):
     if augment:
@@ -70,4 +73,28 @@ def get_dataloader(batch_size=256, num_workers=8, split='train', shuffle=False, 
                                          num_workers=num_workers)
 
     return loader
+
+
+def vector_to_parameters(vec, parameters) -> None:
+    pointer = 0
+    for param in parameters:
+        num_param = param.numel()
+        param.data = vec[pointer:pointer + num_param].view_as(param).data
+        pointer += num_param
+
+
+def from_npy_to_state_dict(ndarr, model):
+    ndarr = torch.from_numpy(ndarr).cuda()
+    PARAM_LEN = 11185233
+    sd_list = []
+
+    for v in ndarr:
+        params = v[:PARAM_LEN].float()
+        buffs = v[PARAM_LEN:].float()
+        vector_to_parameters(torch.tensor(params), model.parameters())
+        vector_to_parameters(torch.tensor(buffs), model.buffers())
+        model.eval()
+        sd_list.append(model.state_dict().copy())
+
+    return sd_list
 
