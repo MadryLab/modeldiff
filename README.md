@@ -1,7 +1,7 @@
 
 <h1>ModelDiff: A Framework for Comparing Learning Algorithms</h1>
 
-This repository contains the code for *ModelDiff*, a framework for feature-based comparisons of ML models trained with two different learning algorithms:
+This repository provides an API for *ModelDiff*, a framework for fine-grained comparisons of supervised learning algorithms:
 
 **ModelDiff: A Framework for Comparing Learning Algorithms** <br>
 *Harshay Shah\*, Sung Min Park\*, Andrew Ilyas\*, Aleksander Madry* <br>
@@ -22,11 +22,11 @@ This repository contains the code for *ModelDiff*, a framework for feature-based
 ## Overview
 <p align='center'><img src="static/visual_summary.png"/></p>
 
-The figure above summarizes our algorithm comparisos framework, *ModelDiff*.
+The figure above summarizes *ModelDiff*, our algorithm comparison framework.
 - First, our method computes example-level data attributions (e.g., using [datamodels](https://gradientscience.org/datamodels-1/) or [TRAK](http://gradientscience.org/trak/)) for both learning algorithms (part A). In part B, we identify directions (in training set space) that are specific to each algorithm using *residual datamodels*.
 - Then, we run PCA on the residual datamodels (part C) to find a set of *distinguishing training directions*---weighted combinations of training examples that disparately impact predictions of models trained with different algorithms. Each distinguishing direction surfaces a distinguishing subpopulation, from which we infer a testable *distinguishing transformation* (part D) that significantly impacts predictions of models trained with one algorithm but not the other.
 
-In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three case studies that compare models trained with/without standard data augmentation, with/without ImageNet pre-training, and with different SGD hyperparameters. As shown below, in all three cases, our framework allows us to pinpoint concrete ways in which the two algorithms being compared differ:
+In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three case studies that compare models trained with/without standard data augmentation, with/without ImageNet pre-training, and with different SGD hyperparameters. As shown below, in all three cases, our framework allows us to pinpoint fine-grained differences between two learning algorithms: 
 
 <p align='center'>
         <img src="static/case_studies.jpg"/>
@@ -38,25 +38,28 @@ In our [paper](https://arxiv.org/abs/2211.12491), we apply *ModelDiff* to three 
 ```python
 from modeldiff import ModelDiff
 
-# setup models, checkpoints, and loaders
+# architecture and checkpoints of models trained with algorithms A and B
 modelA = ...
 modelB = ...
+
 ckptsA = [...] 
 ckptsB = [...] 
-train_loader = ...
 
-# init ModelDiff  
+# dataloaders corresponding to train and validation set 
+train_loader = ...
+val_loader = ... 
+
+# init ModelDiff 
 md = ModelDiff(modelA, modelB, ckptsA, ckptsB, train_loader)
 
-# compare models 
-val_loader = ...
-diff = md.get_A_minus_B(val_loader, num_pca_comps=2)
+# Top-k distinguishing directions that are "important" for algorithm A but not algorithm B
+diff_ab = md.get_A_minus_B(val_loader, num_pca_comps=2)
 
-another_val_loader = ...
-diff2 = md.get_B_minus_A(another_val_loader, num_pca_comps=2)
+# Top-k distinguishing directions that are "important" for algorithm B but not algorithm A
+diff_ba = md.get_B_minus_A(val_loader, num_pca_comps=2)
 ```
 
-Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/analysis) for end-to-end examples of using ModelDiff to analyze the effect of standard data augmentation, ImageNet pre-training, and SGD hyperparameters! 
+Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/analysis) for end-to-end examples of using ModelDiff to analyze how standard design choices in ML pipelines---data augmentation, ImageNet pre-training, and SGD hyperparameters---alter model predictions. 
 
 ## Getting started
 
@@ -73,12 +76,13 @@ If you want to compute data attribution scores from scratch with a method differ
 # init ModelDiff  
 md = ModelDiff()
 
-# load scores
+# load data attribution scores corresponding to algorithms A and B 
 scoresA = ...
 scoresB = ...
 
-# compare models
-diff = md.get_A_minus_B_from_scores(scoresA, scoresB, num_pca_comps=2)
+# Get distinguishing directions that are important for one algorithm but not the other
+diff_ab = md.get_A_minus_B_from_scores(scoresA, scoresB, num_pca_comps=2)
+diff_ba = md.get_A_minus_B_from_scores(scoresB, scoresA, num_pca_comps=2)
 ```
 
 ## Maintainers
