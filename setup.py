@@ -10,9 +10,7 @@ setup(name="modeldiff",
       license_files=('LICENSE.txt', ),
       packages=['modeldiff'],
       install_requires=[
-       "torch>=2.0.0",
        "traker",
-       "tqdm",
        ],
       extras_require={
           'notebooks':
@@ -21,6 +19,7 @@ setup(name="modeldiff",
                "seaborn",
                "wget",
                "scipy",
+               "wilds"
                ],},
       include_package_data=True,
       )
