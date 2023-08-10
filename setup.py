@@ -11,6 +11,7 @@ setup(name="modeldiff",
       packages=['modeldiff'],
       install_requires=[
        "traker",
+       "numpy" 
        ],
       extras_require={
           'notebooks':
@@ -19,7 +20,8 @@ setup(name="modeldiff",
                "seaborn",
                "wget",
                "scipy",
-               "wilds"
+               "wilds",
+               "pandas"
                ],},
       include_package_data=True,
       )

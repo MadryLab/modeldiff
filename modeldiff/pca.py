@@ -24,7 +24,7 @@ def get_variance_along_directions(X: Tensor, P: Tensor,
     # normalize and center X
     X = X.float().to(device)
     X = X/X.norm(dim=1).view(-1,1) # normalizing data attribution embeddings
-    X = X - X.mean(axis=0) # centering to compute variance along directions
+    X = X - X.mean(axis=0) # centering beforehand to compute variance in each direction
     n = float(len(X))
 
     # batch pca directions
@@ -60,6 +60,7 @@ def get_residual_attributions(scores_A: Tensor, scores_B: Tensor):
     """
     scores_A = scores_A.cpu().numpy()
     scores_B = scores_B.cpu().numpy()
+    assert scores_A.shape == scores_B.shape
 
     num = np.multiply(scores_A, scores_B).sum(axis=1)
     denom = np.multiply(scores_B, scores_B).sum(axis=1)
@@ -100,5 +101,9 @@ def residual_pca(scores_A: Tensor, scores_B: Tensor, num_pca_comps: int):
     return {
         'directions': directions,
         'projections': residual_score_projections,
-        'variances': variances
+        'variances': variances,
+        'scores': {
+            'A': scores_A,
+            'B': scores_B
+        }
     }

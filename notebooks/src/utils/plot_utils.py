@@ -5,6 +5,33 @@ import torchvision
 
 from . import common_utils
 
+def update_ax(ax, title=None, xlabel=None, ylabel=None,
+              legend_loc=False, legend_cols=1, despine=True,
+              ticks_fs=10, label_fs=12, legend_fs=12, legend_title=None,
+              title_fs=14, hide_xlabels=False, hide_ylabels=False,
+              ticks=True, grid=True, grid_kws=None,
+              legend_bbox=None, legend_title_fs=None):
+
+    if title: ax.set_title(title, fontsize=title_fs)
+    if xlabel: ax.set_xlabel(xlabel, fontsize=label_fs)
+    if ylabel: ax.set_ylabel(ylabel, fontsize=label_fs)
+    if legend_loc:
+        ax.legend(loc=legend_loc, fontsize=legend_fs, \
+                  ncol=legend_cols, title=legend_title, \
+                  bbox_to_anchor=legend_bbox, title_fontsize=legend_title_fs)
+
+    if ticks:
+        ax.tick_params(direction='in', length=6, width=2, colors='k', which='major', top=False, right=False)
+        ax.tick_params(direction='in', length=4, width=1, colors='k', which='minor', top=False, right=False)
+        ax.tick_params(labelsize=ticks_fs)
+
+    if hide_xlabels: ax.set_xticks([])
+    if hide_ylabels: ax.set_yticks([])
+
+    grid_kws = grid_kws or dict(ls=':', lw=2, alpha=0.5)
+    if grid: ax.grid(True, **grid_kws)
+    return ax
+
 def plot_image_table(image_tensor, num_rows, titles=None, labels=None, ylabels=None, flagged=None,
                      add_image_index=True, image_size=2.5, title_fs=14, label_fs=14, flag_color='red', flag_lw=3):
     num_images = len(image_tensor)
@@ -123,7 +150,7 @@ def plot_grouped_images(cluster_index_map, dataset,
     return fig, ax_grid
 
 def plot_image_grid(img_tensor, num_images=None, num_per_row=None, shuffle=False,
-                    normalize=True, scale_each=False, ax=None, pad_value=0, padding=0, imgsize=2):
+                    normalize=True, scale_each=False, ax=None, pad_value=1, padding=10, imgsize=2):
     """
     torchvision.utils.make_grid wrapper
     - image tensor: torch image tensor

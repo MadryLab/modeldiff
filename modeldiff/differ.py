@@ -90,7 +90,6 @@ class ModelDiff():
                 traker.score(batch=batch, num_samples=batch[0].shape[0])
 
         scores = traker.finalize_scores(exp_name=exp_name)
-        print(scores)
         return torch.tensor(scores).to(torch.float32)
 
     def _compare(self, val_loader, num_pca_comps: int, flip: bool):
@@ -98,8 +97,8 @@ class ModelDiff():
         flip (bool): if True, flips the scores of models A and B (to compute
                       B-A), otherwise computes A-B
         """
-        scoresA = self._attribute_model(val_loader, True)
-        scoresB = self._attribute_model(val_loader, False)
+        scoresA = self._attribute_model(val_loader, True).T # transpose to get [num_test x num_train]
+        scoresB = self._attribute_model(val_loader, False).T
 
         if flip:
             diff = residual_pca(scoresB, scoresA, num_pca_comps)
@@ -110,8 +109,10 @@ class ModelDiff():
 
     def _compare_from_scores(self, scoresA, scoresB, num_pca_comps: int, flip: bool):
         """
-        flip (bool): if True, flips the scores of models A and B (to compute
-                      B-A), otherwise computes A-B
+        scoresA: [num_test x num_train] matrix of attributions scores corresp. to algorithm A
+        scoresB: [num_test x num_train] matrix of attributions scores corresp. to algorithm B
+        num_pca_comps: number of distinguishing directions / residual pca directions 
+        flip (bool): if True, flips the scores of models A and B (to compute B-A), otherwise computes A-B
         """
         if flip:
             diff = residual_pca(scoresB, scoresA, num_pca_comps)
