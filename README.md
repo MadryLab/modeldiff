@@ -67,9 +67,13 @@ Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/anal
    ```
    pip install modeldiff
    ```
-2. For an example usage, check out `notebooks/api_example.ipynb`. In there, we (a) compute TRAK scores (from scratch) for two learning algorithms and (b) then run ModelDiff to compare these algorithms (this is all achieved with one line of code using `modeldiff`!).
+   If you want to also install the dependencies to run all analysis notebooks, run
+   ```
+   pip install modeldiff[notebooks]
+   ```
+3. For an example usage, check out `notebooks/api_example.ipynb`. In there, we (a) compute TRAK scores (from scratch) for two learning algorithms and (b) then run ModelDiff to compare these algorithms (this is all achieved with one line of code using `modeldiff`!).
 
-3. Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/notebooks) for end-to-end ModelDiff examples; each notebook corresponds to a case study in our [paper](https://arxiv.org/abs/2211.12491). For each case study, we provide scripts in `counterfactuals/` to test the effect of the distinguishing transformationss (inferred via ModelDiff) on the predictions of  trained using different learning algorithms. 
+4. Check out [our notebooks](https://github.com/MadryLab/modeldiff/tree/master/notebooks) for end-to-end ModelDiff examples; each notebook corresponds to a case study in our [paper](https://arxiv.org/abs/2211.12491). For each case study, we provide scripts in `counterfactuals/` to test the effect of the distinguishing transformationss (inferred via ModelDiff) on the predictions of  trained using different learning algorithms. 
 
 If you want to compute data attribution scores from scratch with a method different from TRAK (e.g. [datamodels](https://github.com/MadryLab/datamodels)), you can pre-compute those yourself and use the `.get_A_minus_B_from_scores()` and `.get_B_minus_A_from_scores()` methods:
 ```python
@@ -90,3 +94,4 @@ diff_ba = md.get_A_minus_B_from_scores(scoresB, scoresA, num_pca_comps=2)
 * [Harshay Shah](https://twitter.com/harshays_)
 * [Sung Min Park](https://twitter.com/smsampark)
 * [Andrew Ilyas](https://twitter.com/andrew_ilyas)
+* [Kristian Georgiev](https://twitter.com/kris_georgiev1)
