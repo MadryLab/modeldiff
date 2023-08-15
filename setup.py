@@ -2,17 +2,17 @@
 from setuptools import setup
 
 setup(name="modeldiff",
-      version="1.0.0",
+      version="1.0.1",
       description="ModelDiff: A Framework for Comparing Learning Algorithms",
-      long_description="Check our paper https://arxiv.org/abs/2211.12491",
+      long_description="Check out our repo (https://github.com/MadryLab/modeldiff) and our paper (https://arxiv.org/abs/2211.12491).",
       author="MadryLab",
       author_email='harshay@mit.edu',
       license_files=('LICENSE.txt', ),
       packages=['modeldiff'],
       install_requires=[
-       "traker",
-       "numpy" 
-       ],
+          "traker",
+          "numpy"
+      ],
       extras_require={
           'notebooks':
               ["scikit_learn",
@@ -22,6 +22,6 @@ setup(name="modeldiff",
                "scipy",
                "wilds",
                "pandas"
-               ],},
+               ], },
       include_package_data=True,
       )
